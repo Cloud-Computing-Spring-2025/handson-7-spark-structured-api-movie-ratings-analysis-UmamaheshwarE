@@ -266,27 +266,25 @@ A summary of **movie-watching trends** over the years, indicating peak years for
 
 
 ---
+### Challenges and Solutions
+1. CSV Output Format
+Challenge: Spark's write.csv() method creates a directory with part files, making it difficult to generate a single CSV file. Solution: Modified the write_output function to convert Spark DataFrames to pandas DataFrames and used to_csv() to directly output a single CSV file, eliminating the need for post-processing.
 
-## **Grading Criteria**
+2. Data Type Handling
+Challenge: Boolean values in the input data, particularly for the IsBingeWatched column, required special handling. Solution: Defined an explicit schema during data loading to ensure correct data type interpretation and filtered boolean values using col("IsBingeWatched") == True for compatibility with Spark SQL expressions.
 
-Your assignment will be evaluated based on the following criteria:
 
-- **Question 1**: Correct identification of departments with over 50% high satisfaction and engagement (1 mark).
-- **Question 2**: Accurate analysis of employees who feel valued but didn’t suggest improvements, including proportion (1 mark).
-- **Question 3**: Proper comparison of engagement levels across job titles and correct identification of the top-performing job title (1 mark).
+3. Percentage Calculation and Rounding
+Challenge: Accurate calculation and rounding of percentages for binge-watchers. Solution: Used Spark's mathematical functions for division and spark_round to ensure proper rounding to two decimal places. Combined binge-watcher and total user counts before calculating percentages for accurate results.
 
-**Total Marks: 3**
+4. Resource Management
+Challenge: Efficient resource utilization when processing large datasets. Solution: Managed resources by explicitly stopping the Spark session after job completion with spark.stop() and applied early filtering in the data processing pipeline to reduce the volume of data in subsequent steps.
 
----
+## Conclusion
+    This project showcases the power of PySpark's structured API for analyzing large-scale movie ratings data. By exploring binge-watching behavior, identifying churn risk users, and analyzing movie viewing trends, we gain valuable insights into user preferences and behavior. These insights can enhance content recommendation systems, inform retention strategies, and guide content acquisition decisions for streaming platforms.
 
-## **Submission Guidelines**
+         The code's modular design enables easy extension to accommodate additional analyses or adapt to changes in the data schema. Utilizing pandas for output writing streamlines the generation of readable CSV files from Spark DataFrames.
 
-- **Code**: Submit all your PySpark scripts located in the `src/` directory.
-- **Report**: Include a report summarizing your findings for each task. Ensure that your report is well-structured, with clear headings and explanations.
-- **Data**: Ensure that the `movie_ratings_data.csv` used for analysis is included in the `data/` directory or provide a script for data generation if applicable.
-- **Format**: Submit your work in a zipped folder containing all necessary files.
-- **Deadline**: [Insert Deadline Here]
+         By addressing the challenges outlined, we've developed a robust analytical solution that produces clean, actionable outputs while taking full advantage of Spark's distributed processing capabilities for scalable data analysis.
 
----
 
-Good luck, and happy analyzing!
